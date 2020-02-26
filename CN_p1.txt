@@ -1,0 +1,250 @@
+Internet  standards
+RFC: Request for comments
+IETF: Internet Engineering Task Force
+
+a.Five-layer Internet protocol stack
+->Application
+->Network
+->Link
+->Physical
+
+b.Seven-layer ISO OSI reference model
+->Application
+->Presentation
+->Network
+->Link
+->Physical
+
+STORE AND DORWARD: entire packet must arrive at router before it can be transmitted on next link
+
+END-END DELAY = 2L/R (assuming zero propagation delay)
+
+QUEUING AND DELAY: 
+If arrival rate (in bits) to link exceeds transmission rate of link for a period of time:
+->packets will queue, wait to be transmitted on link 
+->packets can be dropped (lost) if memory (buffer) fills up
+
+Two key network-core functions:
+ROUTING: determines source-destination route taken by packets
+FORWARDING: move packets from router’s input to appropriate router output
+
+Packet loss and delay causes:
+if arrival rate > transmission rate => there will be packet loss (buffer may get completely utilized, no free buffers) OR 
+packet delay (newly arriving packets will have to wait)
+
+sources of packet delay:
+[dnodal = dproc + dqueue + dtrans +  dprop]
+
+Internet Protocol Stack:
+APPLICATION: supporting network applications
+		FTP, SMTP, HTTP
+PRESENTATION: for interpreting meaning behind data; like for data compression or encryption
+		encryption protocols
+SESSION: for synchronising; checkpointing; recovering of data
+		recovering methods
+TRANSPORT: process-process data transfer
+		TCP, UDP
+NETWORK: routing of datagrams from source to destination
+		IP, routing protocols
+LINK: data transfer between neighboring  network elements
+		Ethernet, 802.111 (WiFi), PPP
+PHYSICAL: bits “on the wire”
+		fiber, copper wire
+
+possible types of structure of applications:
+client-server
+peer-to-peer (P2P)
+
+SELF SCALABILITY – new peers bring new service capacity, as well as new service demands
+
+SOCKETS: process sends/receives messages to/from its socket; socket analogous to door
+
+to receive messages, process  must have identifier host device has unique 32-bit IP address and port numbers associated with process on host
+
+PORT NUMBERS:
+HTTP server: 80
+mail server: 25
+
+open protocols:
+defined in RFCs
+allows for interoperability
+e.g., HTTP, SMTP
+proprietary protocols:
+e.g., Skype
+
+What transport service does an app need?
+->DATA INTEGRITY: 
+some apps (e.g., file transfer, web transactions) require 100% reliable data transfer 
+other apps (e.g., audio) can tolerate some loss
+->TIMING
+some apps (e.g., Internet telephony, interactive games) require low delay to be “effective”
+->THROUGHPUT
+some apps (e.g., multimedia) require minimum amount of throughput to be “effective”
+other apps (“elastic apps”) make use of whatever throughput they get 
+->SECURITY
+encryption, data integrity, …
+
+TCP service:
+->reliable transport between sending and receiving process
+->flow control: sender won’t overwhelm receiver 
+->congestion control: throttle sender when network overloaded
+->does not provide: timing, minimum throughput guarantee, security
+->connection-oriented: setup required between client and server processes
+
+UDP service:
+->unreliable data transfer between sending and receiving process
+->does not provide: reliability, flow control, congestion control, timing, throughput guarantee, security, orconnection setup,
+
+HTTP uses TCP:
+client initiates TCP connection (creates socket) to server,  port 80
+server accepts TCP connection from client
+HTTP messages (application-layer protocol messages) exchanged between browser (HTTP client) and Web server (HTTP server)
+TCP connection closed
+
+HTTP is “stateless” means:
+server maintains no information about past client requests
+
+non-persistent HTTP:
+at most one object sent over TCP connection
+connection then closed
+downloading multiple objects required multiple connections
+
+persistent HTTP:
+multiple objects can be sent over single TCP connection between client, server
+
+RTT (definition): time for a small packet to travel from client to server and back
+HTTP response time:
+one RTT to initiate TCP connection
+one RTT for HTTP request and first few bytes of HTTP response to return
+file transmission time
+non-persistent HTTP response time = 2RTT+ file transmission time
+
+HTTP Methods:
+GET/URL: is used to request data from a specified resource.
+POST: is used to send data to a server to create/update a resource.
+PUT: is used to send data to a server to create/update a resource; The difference between POST and PUT is that PUT requests are idempotent. 
+That is, calling the same PUT request multiple times will always produce the same result. In contrast, calling a POST request repeatedly have 
+side effects of creating the same resource multiple times.
+HEAD: is almost identical to GET, but without the response body.
+DELETE: deletes the specified resource.
+
+HTTP responses:
+200 OK: request succeeded, requested object later in this msg
+301 Moved Permanently: requested object moved, new location specified later in this msg (Location:)
+400 Bad Request: request msg not understood by server
+404 Not Found: requested document not found on this server
+505 HTTP Version Not Supported
+
+Web sites use COOKIES
+four components:
+1) cookie header line of HTTP response message
+2) cookie header line in next HTTP request message
+3) cookie file kept on user’s host, managed by user’s browser
+4) back-end database at Web site
+
+what COOKIES can be used for?:
+authorization
+shopping carts
+recommendations
+user session state (Web e-mail)
+
+WEB CACHES (proxy server): used to satisfy client request without involving origin server. 
+CACHE acts as both client and server
+->server for original requesting client 
+->client to origin server
+
+why Web Caching?
+->reduce response time for client request
+->reduce traffic on an institution’s access link
+->Internet dense with caches: enables “poor” content providers to effectively deliver content (so too does P2P file sharing)
+
+Total delay (using CACHE with 0.4 hit rate):
+[total delay = 0.6*(delay from origin servers) + 0.4*(delay when satisfied at cache)]
+
+FTP: transfer file to/from remote host
+port 21
+
+Steps involved in FTP connection:
+->FTP client contacts FTP server at port 21, using TCP 
+->client authorized over control connection
+->client browses remote directory, sends commands over control connection
+->when server receives file transfer command, server opens 2nd TCP data connection (for file) to client through port 20
+->after transferring one file, server closes data connection
+
+FTP command and response:
+COMMAND:
+sent as ASCII text over control channel
+USER username
+PASS password
+LIST return list of file in current directory
+RETR filename retrieves (gets) file
+STOR filename stores (puts) file onto remote host
+
+RESPONSE:
+status code and phrase (as in HTTP)
+331 Username OK, password required
+125 data connection already open; transfer starting
+425 Can’t open data connection
+452 Error writing file
+
+ELECTRONIC MAIL:
+Three major components: 
+->USER AGENTS (mail reader(gmail, outlook), edits/compose/read emails)
+->MAIL SERVERS (mailbox(holds messages))
+->Simple Mail Transfer Protocol (SMTP protocol between mail servers to send email messages)
+
+SMTP:
+->uses TCP to reliably transfer email message from client to server 
+->port 25
+
+SMTP three phases of transfer:
+->handshaking (greeting)
+->transfer of messages
+->closure
+
+HTTP vs SMTP:
+HTTP: pull
+SMTP: push
+both have ASCII command/response interaction, status codes
+HTTP: each object encapsulated in its own response msg
+SMTP: multiple objects sent in multipart msg
+
+DNS services:
+->hostname to IP address translation
+->host aliasing: canonical, alias names
+->mail server aliasing
+->load distribution: replicated Web servers: many IP addresses correspond to one name
+
+why not centralize DNS?
+because, doesn't scale, also:
+->single point of failure
+->traffic volume
+->distant centralized database
+->maintenance
+
+DNS name resolution:
+ITERATED QUERY: contacted server replies with name of server to contact
+RECURSIVE QUERY: puts burden of name resolution on contacted name server
+
+DNS RESOURCE RECORDS: commonly referred to as an RR, is the unit of information entry in DNS zone files; 
+			RRs are the basic building blocks of host-name and IP information and are used to resolve all DNS queries.
+			(Name, Value, Type, TTL)
+
+->TTL: is the time to live of the resource record; it determines when a resource should be removed from a cache. 
+->If (Type=A), then Name is a hostname and Value is the IP address for the hostname.
+->If (Type=NS), then Name is a domain (such as foo.com) and Value is the hostname of an authoritative DNS server 
+		that knows how to obtain the IP addresses for hosts in the domain. 
+->If (Type=CNAME), then Value is a canonical hostname for the alias hostname Name. This record can provide querying 
+		hosts the canonical name for a hostname.
+->If (Type=MX), then Value is the canonical name of a mail server that has an alias hostname Name.
+
+
+
+
+
+
+
+
+
+
+

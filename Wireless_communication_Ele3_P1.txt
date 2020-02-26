@@ -1,0 +1,77 @@
+If a signal is bandlimited by W = bandwidth of the signal is W
+
+POWER SPECTRUM = Plot of frequency compnents against power
+
+Faster the signal = Larger the signal bandwidth = Room for more information
+
+Larger power in signal = larger intensity radio wave = Longer propagation distance and better immunity from non-ideal effects
+
+Channel Gain is very less = received signal power only a tiny portion of the transmitted power
+
+SIGNAL to NOISE RATIO = (transmitting power * Channel gain)/(Noise power)
+
+SNR(pow) = SNR(vol)^2
+
+Area of Isotropic Antenna = lambda^2/4pi
+
+Power(dB) = 10log(Signal power(mW)/1mW)
+
+CHANNEL GAIN = 10log((lambda^2/4pi)/(4pi*d^2))
+
+SNR(dB) = 10 log10 (SNR(pow))
+        = 20 log10 (SNR(vol))
+
+BASE STATION
+A fixed station in a mobile radio system used for radio communication with mobile
+stations. Base stations are located at the center or on the edge of a coverage region and
+consist of radio channels and transmitter and receiver antennas mounted on a tower.
+
+CONTROL CHANNEL
+Radio channels used for transmission of call setup, call request, call initiation, and other
+beacon or control purposes.
+
+FORWARD CHANNEL
+Radio channel used for transmission of information from the base station to the mobile.
+
+FULL DUPLEX
+Communication systems which allow simultaneous two-way communication.
+Transmission and reception is typically on two different channels (FDD) although new
+cordless PCS systems are using TDD.
+
+HALF DUPLEX
+Communication systems which allow two-way communication by Systems using the
+same radio channel for both transmission and reception. At any given time, the user can
+only either transmit or receive information.
+
+HANDOFF
+The process of transferring a mobile station from one channel or base station to another.
+
+MOBILE STATION
+A station in the cellular radio service intended for use while in motion at unspecified
+locations. Mobile stations may be hand-held personal units (portables) or installed in
+vehicles (mobiles).
+
+MOBILE SWITCHING CENTER
+Switching center which coordinates the routing of calls in a large Center service area. In a
+cellular radio system, the MSC connects the cellular base stations and the mobiles to the
+PSTN. An MSC is also called a mobile telephone switching office (MTSO).
+
+PAGE
+A brief message which is broadcast over the entire service area, usually in a simulcast
+fashion by many base stations at the same time.
+
+REVERSE CHANNEL
+Radio channel used for transmission of information from the mobile to base station.
+
+ROAMER
+A mobile station which operates in a service area (market) other than that from which
+service has been subscribed.
+
+SIMPLEX SYSTEM
+Communication systems which provide only one-way communication.
+
+SUBSCRIBER
+A user who pays subscription charges for using a mobile communications system.
+
+TRANSCEIVER
+A device capable of simultaneously transmitting and receiving radio signals.

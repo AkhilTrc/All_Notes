@@ -1,0 +1,172 @@
+-----------------------------------------------------------------------------------------------------------------------
+PORTIONS:
+Client-Server file transfer.
+p2p file tranfer.
+SMTP basics.
+Stop and Wait (incl pipelined model).
+Goback-n.
+Selective Repeat and TCP communication protocol operations under 
+	different scenario.
+RDT principles.
+-----------------------------------------------------------------------------------------------------------------------
+SMTP		       	|HTTP
+*PUSH protocol, bcs	|*PULL protocol, bcs
+ sending mailserver 	| once info is loaded 
+ pushes the msg file	| onto the web server,
+ to the recieving mail  | the reciever uses
+ server. Means, TCP 	| HTTP to pull the msg	
+ connection is 		| from the web server. 
+ initiated by the 	| TCP connection is 	
+ sender machine.	| initiated by the 
+			| reciever machine.
+ 			|
+*Body and header of 	|*No such restriction 
+ the msg should be 	| for HTTP.
+ in 7-bit ASCII format. |
+			|
+*All msg's objects	|*Each object is placed
+ are placed into one 	| in its own HTTP
+ msg.			| response msg.
+-----------------------------------------------------------------------------------------------------------------------
+MAIL-ACCESS-PROTOCOL:(MAP)
+->[MAPs] are protocols that are used to retrieve the
+  mail from the reciever's mail server once the sender
+  deposited it into the reciever's mail server.
+1) POP3 [follows 3 steps: 
+	Authorization(username & pwd); 
+	Transaction(UA retrieves msgs or mark/unmark for deletion); 
+	Updation(first session is disconnected then marked msgs are deleted)]
+2) IMAP [recieved msg is associated with a folder, so to get a msg
+	that folder must me opened; so mail can be remotely accessed;
+	users can edit the folders however they want.
+	also, part of a msg can be retrieved using IMAP, useful when
+	bandwidth is low.]
+3) HTTP [accessing mail through web browser;
+	connection is made from mail server to web browser;
+	user agent to her mail server transfer is done using HTTP.]
+-----------------------------------------------------------------------------------------------------------------------
+Peer-2-Peer Architecture:
+->No always-on server as communication is between just 2 systems.
+->The distribution time is the time it takes to get a copy of the file 
+to all N peers.
+->Dsc>=max[NF/us,F/dmin]
+where, NF/us is the time taken to send N copies.
+       F.dmin is the minimum distribution time.
+->Dp2p>=max[F/us,f/dmin,NF/(us+sumofui)]
+where, F/us is the time to send one copy.
+       F/dmin is the client download time.
+       NF/(us+sumofui) is the minimum distribution time.
+->Minimum distribution time for p2p is much lower than that for CS.
+-----------------------------------------------------------------------------------------------------------------------
+(Q)How Demultiplexing work?
+(A)Host recieves IP datagram.
+   Each datagram has Src and dst IP addr.
+   Each datagram has one segment.
+   Each segment has Src and dst port number.
+   Host uses IP addr and port number to direct segment to the right 
+   	socket.
+-----------------------------------------------------------------------------------------------------------------------
+(Q)Connectionless demultiplexing (using UDP socket)?
+(A)Once host recieves UDP segment, checks dst port no.
+   Then, directs UDP segment to socket with that port no.
+   IP datagrams with same dst port no but different src IP and src port
+   	no will be directed to same socket at dst.
+(Q)Connection-Oriented demultiplexing (using TCP socket)?
+(A)src IP, src port no, dst IP, dst port no; all 4 values are used to 
+   	direct to the right socket.
+   Server host supports simultaneous TCP sockets.
+-----------------------------------------------------------------------------------------------------------------------
+*Connectionless UDP:
+ -> No handshakes b/w sender and reciever.
+ ->Each UDP segment handled independently of each other.
+
+*UDP segment formate:
+---------------------------
+Src port no  |	Dst port no
+---------------------------
+length 	     | 	checksum
+---------------------------
+	Application
+	   data
+	 (payload)
+---------------------------
+
+*UDP checksum: used for detecting errorsin transmitted segment.
+	       For sender, add one's compliment sum of segment contents.
+	       For reciever, compute checksum of recieved segment. Check
+	       		if computed checksum equals checksum field value.
+*Calculate checksum by adding the all given 16 bit packet slices and then
+take one's compliment of that. If checksum is all ones, there are no errors.
+-----------------------------------------------------------------------------------------------------------------------
+*Acknowledgement started with rdt2.0. 
+*ACK means that the reciever tells the sender that the pkt has been 
+ successfully recieved or not.
+*rdt2.0 flaws:
+	->Sender retransmits current pkt if ACK gets corrupt.
+	->Reciever discards duplicate pkts.
+-----------------------------------------------------------------------------------------------------------------------
+#STOP AND WAIT PROTOCOL: Sender sends pkt and then waits for reciever to 
+		    	respond with an ACK.
+-----------------------------------------------------------------------------------------------------------------------
+For rdt2.1: 
+*Sender checks if ACK is corrupt; Reciever checks if ACK is duplicate.
+-----------------------------------------------------------------------------------------------------------------------
+*No NAK in rdt2.2 protocol; instead reciever sends ACK for last OK pkt.
+-----------------------------------------------------------------------------------------------------------------------
+*rdt3.0:
+->This is based on considering lose of packets (data or ACKs).
+*Steps taken to handle rdt3.0:
+	->Sender waits a resonable amt of timefor ACK.
+	->Retransmits if no ACK recieved in this reasonable amt of time.
+	->If pkt/ACK gets delayed, a duplicate retransmission will happen.
+	->If pkt1 loss happens, resend pkt1 again after timeout. Then
+	  after pkt1 ACK, send the last successful pkt (which is pkt0).
+	->If ACK loss happens, resend it's pkt again.
+*Dtrans=L/R ------->Time to transmit packet.
+*Usender=(L/R)/(RTT+L/R)
+-----------------------------------------------------------------------------------------------------------------------
+#PIPELINED PROTOCOL: sender allows multiple yet-to-be-ACK pkts.
+*2 forms of Pipelined protocols:
+	1) go-Back-N: (Sender can have upto N un-ACKed pkts together)
+		      (ACKs for all N pkts are sent togther)
+		      (timer ends only at the last un-ACKed pkt)
+	2) Selective repeat: (Sender can have upto N un-ACKed pkts together; 
+				 resumbit after timer ends)
+			     (ACK for each pkt sent individually)
+			     (time ends for each un-ACKed pkt, resubmit after timer ends)
+-----------------------------------------------------------------------------------------------------------------------
+*TCP RTT, timeout:
+EstimatedRTT = (1-alpha)*EstRTT + alpha*sampleRTT
+(alpha=0.125) usually.
+
+Timeoutinterval = EstRTT + 4*savemarg
+-----------------------------------------------------------------------------------------------------------------------
+#HANDSHAKE:
+->Client initiates handshake.
+->"SYN" flag is set as 1 to start a connection; SYN flag is 1 bit.
+->"ACK" flag is set as 1.
+
+*Piggy-packing: Attaching data along with the last ACK.	
+
+#2-Way Handshake: Has only one hanshake, from client side.
+*Problems with 2WH: 
+	1) Half-open connection: Client retransmits request before ACK 
+		reaches client; therefore connection is closed and data 
+		can't be sent.
+	2) Variable delays.
+	3) Msg reorder.
+	4) Can't see other side.
+
+#3-Way Handshake: Client sends SYN msg; then server sends back SYNACK 
+		  msg; SYNACK(x) is recieved at client, this means 
+		  server is live; also, ACK(x) recived at server means
+		  client is live.
+-----------------------------------------------------------------------------------------------------------------------
+#MAX SEGMENT LIFETIME (MSL): Max possible time the TCP segment can exist in the n/w.
+*Time wait after TCP close is 2*MSL.
+#ESTAB shows the 'extablished' state of the connction.
+#TCP FLOWCONTROL: ->Reciever controls sender so that sender won't overflow 
+		    reciever's buffer by sending too much.
+		  ->Reciever attaches rwnd value in TCP header; sender sees
+		    this rwnd value and restricts un-ACKed data to rwnd value.
+		  ->(rwnd < rcvBuffer).

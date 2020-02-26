@@ -1,0 +1,47 @@
+IP addr has 4 bytes (32 bit).
+DEF: DNS (Domain Name System): Translated Hostname to IP addrs.
+DNS protocol run over UDP and uses port 53.
+--------------------------------------------------------------------------------
+DNS services:
+[1]Hostname to IP adds translation:(method)	
+   1. The same user machine runs the client side of the DNS application. 
+   2. The browser extracts the hostname, www.someschool.edu, from the URL
+      and passes the hostname to the client side of the DNS application. 
+   3. The DNS client sends a query containing the hostname to a DNS server. 
+   4. The DNS client eventually receives a reply, which includes the IP addr 
+      for the hostname. 
+   5. Once the browser receives the IPaddress from DNS, it can initiate a 
+      TCPconnection to the HTTPserver process located at port 80 at that IP addrs.
+[2]Host aliasing: 
+	-> long Hostnames can have multiple shorter alias names.
+	-> The original long name is called "Canonical hostname".
+	-> DNS can be invoked to get the Canonical hostname from the alias 
+	   name.
+[3]Mail server aliasing:
+	-> Providing alias names for mail hostname.
+	-> According to MX records, a company can have the same web server 
+	   and mail server alias names.
+[4]Load Distribution:
+	-> One hostname can have multiple IP addrs for multiple servers.
+	-> eg: cnn.com can have multiple servers, each having their own 
+	   IP addrs.
+	-> When a client requests a hostname, a list of IP addrs is 
+	   produced of all the server, then redirected to the specific 
+	   IP addr.
+--------------------------------------------------------------------------------
+(Q)Problems with Centralized DNS server?
+(A)Has 4 problems:
+   -> If one DNS server crashes, whole network crashes.
+   -> Traffic to single DNS server, difficult to handle.
+   -> Places farther from DNS server will experience slower/inconsistent
+      speeds and connections.
+   -> Will have to keep update/record of all new comming DNS hosts.
+--------------------------------------------------------------------------------
+Distributed Hierarchical Database for DNS:
+https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.slideshare.net%2Frahulsharma4201993%2Fdns-54331058&psig=AOvVaw3SwS1BbVFZDj-1H5Yd16gP&ust=1582462418440000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCOCt2YSa5ecCFQAAAAAdAAAAABAD	    
+
+Types of DNS servers:
+1) Root DNS servers.
+2) Top-level domain (TLD) servers.
+3) Authoritative DNS servers.
+--------------------------------------------------------------------------------

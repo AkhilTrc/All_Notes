@@ -1,0 +1,78 @@
+TYPES OF CIPHER:
+
+CAESER CIPHER: Each letter in the plain text will be replaced by 3 letters down.
+		eg: AKHIL -> DNKLO
+
+MONOALPHABETIC CIPHER: Each letter in the plain text is randomly replaced by any letter other than the same letter.
+			eg: A be replaced by B-Z; C be replaced by A,B or D-Z
+
+HOMOPHONIC SUBSTITUTION CIPHER: Each alphabet in the English alphabet can have either multiple values or single values assigned to it. This forms
+				the key.
+				eg: A:x, y, c; B:C; X:E, g, k;
+				    here, we can choose (x, y or c) to represent A in the plain text.
+
+POLYGRAM SUBSTITUTION CIPHER: Instead of each letter in the plain text, blocks of letter will be replaced with other blocks of letters from the
+				plain text.
+				eg: If EDUCBA is the plain text, EDU can be replaced with LOD, or the whole of EDUCBA can be replaced with XYQLAB
+
+POLYALPHABETICAL SUBSTITUTION CIPHER (VIGENERE CIPHER): First a table is made with 26X26 dimensions. The columns and rows are named with the 
+							alphabets in order, left-right and top-bottom. Then, each cell is filled with the alphabets
+							in order starting from 'A' in the first row. Then start from 'B' till the end and ends with
+							'A' in the second row. Next row starts with 'C' and the same continues till the end in a 
+							cyclic manner.
+						PROCESS: 1)A key word is given. 
+							 2)Take the corresponding letters from the plain text and the key word and find the cell 
+							   coordinating to that. 
+							 3)The alphabet in that cell is the encryption letter for that letter 
+							   in the plain text.
+
+KASISKI ANALYSIS FOR VIGENERE CIPHER: To break the encryption code: Check in the encrypted text where a patern is repeating.
+				      Find the distance between the repeating blocks.
+				      Take the factors of the distance. The key used could be one of the factors of that distance. 
+				      
+
+PLAYFAIR CIPHER: 1)Form a 5X5 matrix. Fill the initial cells with the letters of the plain text omitting the duplicate letters. Fill the rest of the 
+		   cells with the rest of the english alphabets other than whats already filled (except 'J').
+		 2)Group the letters in the plain text in pairs of 2. If the # is odd, add 'z' or 'a' at the end of the last standing letter.
+		 3)Follow these rules:
+			i)If any one of the pairs are in the same column, take the letters below each.
+			ii)If any one of the pairs are in the same row, take the letters to the right to each.
+			iii)If no pairs are in the same column or row, form a rectangle with the required cells as the corners and take the 
+			    horizontally farthest cell within that rectangle.
+
+HILL CIPHER: 1)Take the #of letters in the given plain text as 'n'.
+	     2)Form a nxn square matrix.
+	     3)Fill the matrix with the numerical values - 1 of the letters of the "key" given.
+		eg: is plaintext = "ACT" and key = "GYBNQKURP";
+		    n=3;
+		    Matrix = 16(G) 24(Y) 1(B)
+			     13(N) 16(Q) 10(K)
+			     20(U) 17(R) 15(P)
+	     4)Also form nx1 vector of the plaintext:
+		eg: 0(A)
+		    2(C)
+		    19(T)
+	     5)The encrypted vector is as follows:
+		16 24 1   0         67          15 
+		13 16 10  2    =    222    =    14 (mod 26)
+		20 17 15  19        319         7
+	     6)Thus the encrypted letter would be the alphabetical values of the 26 modulo of the product of the matrices.
+
+AFFINE CIPHER: 1)Get values 'a' and 'b' variable from question.
+	       2)Substitute 'a' and 'b' in equation:
+			E(x) = (ax + b) mod 26
+	       3)Find E(x) for each letter in the plain text for their corresponding numerical value starting with 'A' = 0.
+		eg: If a = 5 and b = 7
+		    for plain text = "def" = 3, 4, 5
+		    E(3) = (5x3+7)mod26 = 22 = w
+		    E(4) = (5x4+7)mod26 = 1  = b
+		    E(5) = (5x5+7)mod26 = 6  = g
+		    Therefore, encrypted text for 'def' is 'wbg'
+
+MULTIPLICATIVE INVERSE: ax = 1(mod m); here 'x' is the MODULAR MULTIPLICATIVE INVERSE.
+
+FERMAT'S LITTLE THEOREM: states that if p is a prime number, then for any integer a, the number (a^p – a) is an integer multiple of p.
+			 ie, a^p = a(mod p)
+		    	 If 'a' is not divisible by 'p', then: a^(p-1) = 1(mod p)
+
+
