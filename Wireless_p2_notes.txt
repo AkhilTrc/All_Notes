@@ -1,0 +1,111 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#REFECTION: occurs when waves impinges on obstruction that is much larger in size compared to wavelength of a signal.
+#DIFFRACTION: when radio path between the sender and reciever is obstructed by an impenetrable body and by a surface with sharpe irregularities.
+#SCATTERING: occurs when the radio channel contains objects whose size are on order of wavelength or less than the propogating wavelength.
+#CARRIER SENSING: carrier state detection makes sure the medium for transmission is free.
+		  Physical carrier sensing: detects presence of other users by analyzing all detected packets.
+		  Virtual carrier sensing: done by sending MPDU duration info in the header of RTS/CTS and data frames.
+
+#CONGESTION DELAY: its an issue that happens when there is more data in the n/w than can be sent with resonable packet delay, no packet loss, etc.
+#CONTENSION WINDOW (cw): in dcf, (cw) is a numerical value used for congestion delay (CD) and to avoid collisions of data when there is transmission simultaneously.
+			 [larger (cw) -> larger back-off intervals]
+			 [smaller (cw) -> larger #of collisions]
+
+#BACK-OFF PERIOD: the period of time waited by the node after identifying that the channel is not clear, before trying transmission again.
+#BINARY EXPONENTIAL BACK-OFF: in dcf, when node fails to recieve CTS in response to RTS, it increases (cw) up to (cwmax=1023); else if transmission is 
+				successful its brought down to (cwmin=31).
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#SHORT INTERFRAME SPACE (SIFS): the amount of time in microseconds required for a wireless interface to process a received frame and to respond with a response frame.
+			      	used for RTC/CTS frames.
+#DCF INTERFRAME SPACE (DIFS): minumum medium idle time for contention-based services.
+			      [DIFStime = SIFStime + 2*slottime]
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+*Frames that are shorter than RTC threshold are considered to be short, and frames longer than the RTC threshold are considered to be long.
+*Error detection is the responsibility of the station sending the frame.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+*PLCP: Physical Layer Convergence Protocol.
+Types of Networks:
+	-> Independent/Adhoc (without access point) 
+			     (communication is always direct between machine to machine)
+			     (usually slower)
+			     (less to no security options)
+			     (range depends on #of devices on the n/w)
+	-> Infrastructure Mode (with access point)
+			       (communication is always via an AP)
+			       (usually faster)
+			       (more security options)
+			       (range depends on #of APs)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+*INFRASTRUCTURE NETWORK (PCF):
+Stations (STA): terminal with access mechanism to the wireless medium and radio contact to the access point.
+Basic Service Set (BSS): group of stations using the same radio frequency.
+Access Point (AP): station integrated into the wireless LAN and the distributed system.
+Portal: bridge to other wired networks.
+Distributed System: interconnected network to form one logical network (ESS: Extended Service Set) based on serveral BSS. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+*Challenges with 802.11 MAC:
+	->RF link quality
+	->Positive acknowledgement of data transmissions
+	->Hidden Node Problems:
+	     eg: there are 3 machines on a network (A, B and C);
+		 A sends msg to B, simultaneously C sends msg to B;
+		 now there will be collision at B if C is out of range of A; (A and C are hidden to each other).
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+*CSMA/CD: 
+Carrier Sense (CS): carrier state detection makes sure the medium for transmission is free.
+Multiple Access (MA): multiple participants shares a transmission medium.
+Collision Detection (CD): decides regulation path in case data packets collide.
+
+*CSMA/CA:
+Carrier sense (CS): --same--
+Multiple Access (MA): --same--
+Collision Aviodance (CA): a scheduling system will make sure no 2 or more participants don't start transmission at the same time;
+			  if detected, transmission will be done again.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+*RTS/CTS is the optional mechanism used by the 802.11 wireless networking protocol to reduce frame collisions introduced by the hidden node problem.
+*RTS/CTS frames silences stations in the immediate vicinity.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CONTROL FRAMES (type=01)
+1010 -> Power Save (PS)-Poll
+1011 -> RTS
+1100 -> CTS
+1101 -> Acknowledgment (ACK)
+1110 -> Contention-Free (CF)-End
+1111 -> CF-End+CF-Ack
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#FREE SPACE PROPOGATION MODEL: is used to predict the recieved signal strength when the transmitter and reciever have a clear, unobstructed LOS 
+			       path between them.
+			       eg: Satellite communication systems; microwave line-of-sight radio.
+*Friis Free Space Equation:
+		[Pr(d) = (Pt*Gt*Gr*lambda^2)/((4pi)^2*(d^2)*L)]
+			(L>=1); (L=1 means no system loss)
+
+*Isotropic radiator unit gain:
+		[Gain G = 4*pi*Ae/lambda^2]
+
+*Path Loss equation: (in dB) difference b/w the effective transmitted power and recieved power.
+		[PL(dB) = -10log((Gt*Gr*lambda^2)/((4pi)^2*d^2)]
+
+[P(dBm) = 10*log(W)+30]
+
+[P(dBm) = 10*log(1000*P(W)/1W)]
+
+*FSP model is often inaccurate in mobile wave propogation.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+*2-WAY GROUND REFLECTION MODEL: Considered both LoS and ground reflected path.
+				rapid path loss experience compared to free space model.
+
+*Power recieved: (Pr)
+[Pr = (Pt*Gt*Gr*ht^2*hr^2)/d^4]
+
+Path Loss (dB):
+[PL(dB) = 40logd-(10logGt + 10logGr + 20loght + 20loghr]
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+*SKY WAVE PROPOGATION MODEL: propogation of radio waves reflected or refracted back to earth from ionosphere.
+			     short wavelenth, high frequency.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
